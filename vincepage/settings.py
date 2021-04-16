@@ -10,11 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -23,9 +23,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'jrzyqqzh#24$0_-_+)qrc&ij_7lq9f9j32gqd@$@9v5bh@!hl^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
+if os.environ.get('ENV') == 'PRODUCTION':
+    DEBUG = False
+else:
+    DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -36,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic', # new
     'django.contrib.staticfiles',
+
     'mesvins',
     'accounts',
 ]
@@ -44,6 +50,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # new
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -121,12 +128,40 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 #STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')], # new
-#STATICFILES_DIRS = os.path.join(BASE_DIR, 'static') # new
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-    
-]
 
+#STATICFILES_DIRS = os.path.join(BASE_DIR, 'static') # new
+
+#STATICFILES_DIRS = [(BASE_DIR.joinpath('static'))]
+
+##STATIC_ROOT = (BASE_DIR.joinpath('staticfiles'))
+
+#STATICFILES_STORAGE ='whitenoise.storage.CompressedManifestStaticFilesStorage' # new
+
+
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
+STATICFILES_DIRS =  [
+    os.path.join(BASE_DIR, 'static'),
+    ]
+
+#STATIC_ROOT =  [ 
+#    os.path.join(BASE_DIR, 'staticfiles'),
+#   ]
+
+#STATICFILES_STORAGE ='whitenoise.storage.CompressedManifestStaticFilesStorage' # new
+if os.environ.get('ENV') == 'PRODUCTION':
+
+    PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+    STATICFILES_DIRS = (
+        os.path.join(PROJECT_ROOT, 'static'),
+    )
+    # https://warehouse.python.org/project/whitenoise/
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+#https://github.com/wsvincent/djangoforbeginners
+# https://tutorial.djangogirls.org/en/deploy/
