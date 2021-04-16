@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 class Vin(models.Model):
@@ -9,3 +10,8 @@ class Vin(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('vin_detail', args=[str(self.id)])
+
+

@@ -16,9 +16,8 @@ class MesVinsTests(TestCase):
             email='test@email.com',
             password='secret'
         )
-
         self.vin = Vin.objects.create(
-            name='A good title',
+            name='A good name',
             description='Nice body content',
             author=self.user,
         )
@@ -28,7 +27,7 @@ class MesVinsTests(TestCase):
         self.assertEqual(str(vin), vin.name)
 
     def test_vin_content(self):
-        self.assertEqual(f'{self.vin.name}', 'A good title')
+        self.assertEqual(f'{self.vin.name}', 'A good name')
         self.assertEqual(f'{self.vin.author}', 'testuser')
         self.assertEqual(f'{self.vin.description}', 'Nice body content')
 
@@ -43,5 +42,30 @@ class MesVinsTests(TestCase):
         no_response = self.client.get('/vin/100000/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
-        self.assertContains(response, 'A good title')
+        self.assertContains(response, 'A good name')
         self.assertTemplateUsed(response, 'vin_detail.html')
+
+    #CRUD
+    def test_vin_create_view(self): # new
+        response = self.client.post(reverse('vin_new'), {
+            'name': 'New title',
+            'description': 'New text',
+            'author': self.user.id,
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Vin.objects.last().name, 'New title')
+        self.assertEqual(Vin.objects.last().description, 'New text')
+    
+    def test_vin_update_view(self): # new
+        response = self.client.post(reverse('vin_edit', args='1'), {
+        'name': 'Updated name',
+        'description': 'Updated text',
+        })
+        self.assertEqual(response.status_code, 302)
+
+    def test_vin_delete_view(self): # new
+        response = self.client.post(
+        reverse('vin_delete', args='1'))
+        self.assertEqual(response.status_code, 302)
+
+    # python manage.py test

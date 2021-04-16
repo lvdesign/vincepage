@@ -18,6 +18,10 @@ python manage.py createsuperuser
 admin: toto
 psw: totototo
 
+## Git
+- $ git status
+- $ git add -A
+- $ git commit -m "initial commit"
 
 ## Models 
 
