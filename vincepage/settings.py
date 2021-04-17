@@ -127,29 +127,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')], # new
 
-#STATICFILES_DIRS = os.path.join(BASE_DIR, 'static') # new
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),] # new
+#STATIC_ROOT = [os.path.join(BASE_DIR, 'staticfiles'),] # new
 
-#STATICFILES_DIRS = [(BASE_DIR.joinpath('static'))]
-
-##STATIC_ROOT = (BASE_DIR.joinpath('staticfiles'))
-
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage' # new
 #STATICFILES_STORAGE ='whitenoise.storage.CompressedManifestStaticFilesStorage' # new
 
 
-#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
-STATICFILES_DIRS =  [
-    os.path.join(BASE_DIR, 'static'),
-    ]
 
-#STATIC_ROOT =  [ 
-#    os.path.join(BASE_DIR, 'staticfiles'),
-#   ]
-
-#STATICFILES_STORAGE ='whitenoise.storage.CompressedManifestStaticFilesStorage' # new
+'''
 if os.environ.get('ENV') == 'PRODUCTION':
 
     PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -159,6 +147,7 @@ if os.environ.get('ENV') == 'PRODUCTION':
     )
     # https://warehouse.python.org/project/whitenoise/
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+'''
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'

@@ -18,6 +18,14 @@ python manage.py createsuperuser
 admin: toto
 psw: totototo
 
+python manage.py collectstatic
+
+## dependances
+pip freeze > requirements.txt
+
+nano ~/.bash_profile
+
+
 ## Git
 - $ git status
 - $ git add -A
